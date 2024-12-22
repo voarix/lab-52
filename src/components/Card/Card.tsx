@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface CardProps {
   rank: number | string;
   suit: string;
@@ -6,7 +8,7 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ rank, suit }) => {
   return (
     <span className={`card rank-${rank} ${suit}`}>
-      <span className="rank">{rank}</span>
+      <span className="rank" style={{ textTransform: 'uppercase' }}>{rank}</span>
       <span className="suit">{suit}</span>
     </span>
   );
