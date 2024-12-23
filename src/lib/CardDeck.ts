@@ -2,7 +2,7 @@ import Card from "./Card.ts";
 import { ranks, suits } from "../constants.ts";
 
 class CardDeck {
-  private deck: Card[];
+  public deck: Card[];
 
   constructor() {
     this.deck = [];

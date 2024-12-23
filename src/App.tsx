@@ -1,40 +1,50 @@
-import "./App.css";
-import Card from "./components/Card/Card.tsx";
-import CardType from "./lib/Card.ts";
-import CardDeck from "./lib/CardDeck.ts";
-import React, { useState } from "react";
+import './App.css';
+import Card from './components/Card/Card.tsx';
+import CardType from './lib/Card.ts';
+import CardDeck from './lib/CardDeck.ts';
+import { useState } from 'react';
+import PokerHand from './lib/PokerHand.ts';
 
 const App = () => {
   const [hand, setHand] = useState<CardType[]>([]);
+  const [combination, setCombination] = useState<string>('');
+  const [deck, setDeck] = useState(new CardDeck());
 
   const createPack = () => {
-    const pack = new CardDeck();
-    const newHand: CardType[] = pack.getCards(5);
+    const newHand: CardType[] = deck.getCards(5);
     setHand(newHand);
-    console.log(newHand);
+
+    const pokerHand = new PokerHand(newHand);
+    setCombination(pokerHand.getOutcome());
+
+    setDeck(deck);
   };
 
-  let content: React.ReactNode;
+  const clearDeck = () => {
+    setDeck(new CardDeck());
+    setHand([]);
+    setCombination('');
+  };
 
-  if (hand.length === 0) {
-    content = <button type="button" onClick={createPack}>Раздать карты</button>;
-  } else {
-    content = (
-      <>
-        <button type="button" onClick={createPack}>
-          Раздать карты
-        </button>
+  return (
+    <>
+      <p>Количество карт в колоде: {deck.deck.length}</p>
+      <p>Комбинация: {combination}</p>
+      {deck.deck.length >= 5 ? (
+        <button type="button" onClick={createPack}>Раздать карты</button>
+      ) : (
+        <button type="button" onClick={clearDeck}>Восполнить колоду</button>
+      )}
 
-        <div className="playingCards faceImages">
+      {hand.length > 0 && (
+        <div className="playingCards faceImages" style={{marginTop: '20px'}}>
           {hand.map((card, index) => (
-            <Card key={index} rank={card.rank} suit={card.suit} />
+            <Card key={index} rank={card.rank} suit={card.suit}/>
           ))}
         </div>
-      </>
-    );
-  }
-
-  return content;
+      )}
+    </>
+  );
 };
 
 export default App;
