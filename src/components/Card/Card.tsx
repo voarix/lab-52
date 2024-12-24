@@ -1,5 +1,5 @@
 import React from "react";
-import { suits } from '../../constants.ts';
+import { suits } from "../../constants.ts";
 
 interface CardProps {
   rank: number | string;
